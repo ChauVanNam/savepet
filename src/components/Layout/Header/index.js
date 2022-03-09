@@ -1,21 +1,14 @@
 import React from "react";
 import { auth } from "../../../../firebase.config";
 import { signOut } from "firebase/auth";
+import { logout } from "../../../util/auth";
 import { useRouter } from "next/router";
-
+import cookie from "js-cookie";
 const Header = () => {
   const router = useRouter();
-  const logout = async () => {
-    try {
-      await signOut(auth);
-      router.push("/login");
-    } catch (error) {
-      console.error(error);
-    }
-  };
   return (
     <div>
-      <button onClick={logout} className="btn">
+      <button onClick={() => logout()} className="btn">
         Đăng xuất
       </button>
     </div>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Field, Form, Formik } from "formik";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import ErrorMessage from "../../small_components/ErrorMessage";
@@ -7,9 +7,10 @@ import cookie from "js-cookie";
 import * as Yup from "yup";
 import { useRouter } from "next/router";
 import LoadingOverlay from "react-loading-overlay";
+import { isLoggedIn } from "../../util/auth";
 import Loader from "react-loader-spinner";
-import { withModal } from "../../container/modal";
 import { ModalContainer } from "../../container/modal";
+
 const LoginSchema = Yup.object().shape({
   email: Yup.string()
     .email("Vui lòng nhập đúng định dạng Email.")
@@ -46,6 +47,12 @@ const LoginPage = () => {
     }
     setIsLoading(false);
   };
+
+  useEffect(() => {
+    if (isLoggedIn()) {
+      router.push("/");
+    }
+  });
 
   return (
     <React.Fragment>
