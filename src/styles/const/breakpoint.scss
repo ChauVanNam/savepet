@@ -1,0 +1,134 @@
+// Small tablets and large smartphones (landscape view)
+$screen-sm-min: 576px;
+$screen-sm1-min: 500px;
+$screen-ssm-min : 330px;
+
+// Small tablets (portrait view)
+$screen-md-min: 768px;
+
+// Tablets and small desktops
+$screen-lg-min: 992px;
+
+// Large tablets and desktops
+$screen-xl-min: 1200px;
+
+// Large tablets and desktops
+$screen-xl1-min: 1300px;
+
+// Large desktops mac 2
+$screen-xl2-min: 1400px;
+
+// Large desktops mac 3
+$screen-xl3-min: 1500px;
+
+// Large desktops mac 4
+$screen-xl4-min: 1600px;
+
+// Large desktops mac 5
+$screen-xl5-min: 1700px;
+
+// Large desktops mac 6
+$screen-xl6-min: 1800px;
+
+// Large desktops mac 7
+$screen-xl7-min: 1900px;
+
+// Large desktops mac 8
+$screen-xl8-min: 2000px;
+
+// Small devices
+
+@mixin ssm {
+    @media (max-width: #{$screen-ssm-min}) {
+        @content;
+    }
+}
+
+@mixin sm {
+    @media (max-width: #{$screen-sm-min}) {
+        @content;
+    }
+}
+
+@mixin sm1 {
+    @media (max-width: #{$screen-sm1-min}) {
+      @content;
+    }
+  }
+
+// Medium devices
+@mixin md {
+    @media (max-width: #{$screen-md-min}) {
+        @content;
+    }
+}
+
+// Large devices
+@mixin lg {
+    @media (max-width: #{$screen-lg-min}) {
+        @content;
+    }
+}
+
+// Extra large devices
+@mixin xl {
+    @media (max-width: #{$screen-xl-min}) {
+        @content;
+    }
+}
+
+// Extra large devices
+@mixin xl1 {
+    @media (max-width: #{$screen-xl1-min}) {
+        @content;
+    }
+}
+
+// Extra large devices 2
+@mixin xl2 {
+    @media (max-width: #{$screen-xl2-min}) {
+        @content;
+    }
+}
+
+// Extra large devices 3
+@mixin xl3 {
+    @media (max-width: #{$screen-xl3-min}) {
+        @content;
+    }
+}
+
+// Extra large devices 4
+@mixin xl4 {
+    @media (max-width: #{$screen-xl4-min}) {
+        @content;
+    }
+}
+
+// Extra large devices 5
+@mixin xl5 {
+    @media (max-width: #{$screen-xl5-min}) {
+        @content;
+    }
+}
+
+// Extra large devices 6
+@mixin xl6 {
+    @media (max-width: #{$screen-xl6-min}) {
+        @content;
+    }
+}
+
+// Extra large devices 7
+@mixin xl7 {
+    @media (max-width: #{$screen-xl7-min}) {
+        @content;
+    }
+}
+
+// Extra large devices 8
+@mixin xl8 {
+    @media (max-width: #{$screen-xl8-min}) {
+        @content;
+    }
+}

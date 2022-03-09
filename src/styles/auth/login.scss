@@ -1,0 +1,190 @@
+
+html,body {
+    height: 100%;
+}
+
+input:focus, textarea:focus, select:focus{
+    outline: none;
+}
+
+::placeholder {
+    font-size: 16px;
+    color: rgba(0,0,0,0.25);
+    line-height: 24px;
+}
+
+ul{
+    // list-style: none;
+}
+
+.login {
+    overflow: hidden;
+    background: #F0F2F5;
+    height: 100vh;
+}
+
+// ._loading_overlay_wrapper {
+//     height: 100%;
+// }
+
+
+.logo-image {
+    max-width: 179px;
+}
+
+.login-left {
+    justify-content: center;
+}
+
+/* enable absolute positioning */
+.inner-addon { 
+    position: relative; 
+
+    img{
+        position: absolute;
+        padding: 16px;
+        pointer-events: none;
+        left : 0;
+    }
+}
+
+.forget-password-text{
+    margin-top: 1.2rem;
+    margin-bottom: 1.2rem;
+    font-size: 14px;
+    color: #EE392A;
+    line-height: 22px;
+}
+
+.login-input {
+    text-indent: 30px;
+}
+
+.login-button {
+    background: #EE392A;
+    border-radius: 4px;
+    font-size: 16px;
+    color: #FFFFFF;
+    line-height: 24px;
+    width: 100%;
+    border : 1px solid #EE392A;
+    height: 40px;
+}
+
+.login-button:hover{
+    background-color: #EE1200;
+    transition: 0.3s;
+}
+
+
+.login-tab{
+    justify-content: center;
+}
+
+.login-tab>li:first-child{
+    margin-right:3rem;
+}
+
+.pb-5{
+    padding-bottom: 4rem !important;
+}
+
+.login-tab-text{
+    font-size: 16px;
+    color: #000000;
+    line-height: 24px;
+}
+
+.login-tab-text-active{
+    font-size: 16px;
+    color: #EE392A;
+    line-height: 24px;
+}
+
+.react-tabs__tab-list{
+    padding-left:0px !important;
+    margin-left:0px !important;
+}
+
+.full-height {
+    height: 100%;
+}
+
+.login-background {
+    height: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.react-tabs__tab--selected, .react-tabs__tab:focus, .react-tabs__tab:hover {
+    border-bottom-color: #EE392A;
+    color: #EE392A;
+}
+
+.react-tabs__tab {
+    display: inline-block;
+    border-top: 3px solid transparent;
+    border-bottom: 3px solid transparent;
+    bottom: -1px;
+    position: relative;
+    list-style: none;
+    padding: 15px;
+    font-size: 16px;
+    color: #000000;
+    line-height: 24px;
+    padding-bottom:0.5rem;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+
+.react-tabs__tab-panel > :first-child{
+    padding-bottom:0rem;
+}
+
+.react-tabs__tab--selected {
+    border-bottom-color: #EE392A;
+    font-size: 16px;
+    color: #EE392A;
+    line-height: 24px;
+}
+
+.login_error_message {
+    color: #EE392A;
+    font-size: 16px;
+}
+
+.login_success_message{
+    color: green;
+}
+
+.forget-password-text{
+    font-size: 16px;
+    color: #EE392A;
+    line-height: 24px;
+}
+
+.login-social-with-text{
+    width: 100%; 
+    text-align: center; 
+    border-bottom: 1px solid #B6B6B6; 
+    line-height: 0.1em;
+    margin: 10px 0 20px; 
+    
+}
+
+.login-social-with-text>span{
+    background:#f0f2f5; 
+    padding:0 5px; 
+    font-size: 14px;
+    font-weight: 500;
+    color:#616161;
+}
+.error-text{
+    display: flex;
+    justify-content: "start";
+    padding: 2px;
+    font-size: 14px;
+    color: red;
+}

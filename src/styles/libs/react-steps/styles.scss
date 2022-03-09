@@ -1,0 +1,22 @@
+.button-block {
+  display: flex;
+  justify-content: flex-end;
+}
+
+@media only screen and (max-width: 767px) {
+  .button-block {
+      flex-direction: column;
+      div {
+          padding-bottom: 1rem;
+      }
+  }
+  .rc-steps-item-custom {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 1rem;
+  }
+  .rc-steps-item-custom>.rc-steps-item-container>.rc-steps-item-content {
+      display: flex;
+      align-items: center;
+  }
+}

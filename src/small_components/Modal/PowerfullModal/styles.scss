@@ -1,0 +1,120 @@
+.pito-modal {
+  position: relative;
+  // top: 50%;
+  // left: 50%;
+  z-index: 9999;
+  // margin-right: -50%;
+  // transform: translate(-50%, -50%);
+  border: none;
+  border-radius: 8px;
+  background: #fff;
+  display: flex;
+  flex-flow: column;
+  max-height: 97vh;
+  overflow: hidden;
+
+  &--sm {
+    max-width: 27%;
+  }
+  &--md {
+    max-width: 47%;
+  }
+  &--lg {
+    max-width: 80%;
+  }
+  .modal-header {
+    padding: 18px 32px;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    background-color: white;
+    z-index: 10;
+    transition: all 300ms;
+
+    &.modal-header-shadow {
+      box-shadow: unset;
+    }
+  }
+
+  .modal-title {
+    font-size: 24px;
+    font-family: Lato-Regular;
+    font-weight: 600;
+    color: #000;
+  }
+
+  .modal-footer {
+    padding: 1rem;
+    transition: all 300ms;
+
+    &.modal-footer-shadow {
+      box-shadow: unset;
+    }
+  }
+
+  .modal-body-wrapper {
+    overflow-y: scroll;
+    overflow-x: hidden;
+  }
+
+  .modal-body {
+    padding-left: 32px;
+    padding-right: 32px;
+  }
+}
+.pito-modal__overlay {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+.modal-footer--reverse {
+  flex-direction: row-reverse;
+  justify-content: center;
+}
+.modal-btn-close {
+  margin-right: -1rem;
+  background-color: transparent;
+  border: 0;
+  font-size: calc(1.275rem + 0.3vw);
+  line-height: 0.5;
+  color: #000;
+  text-shadow: 0 1px 0 #fff;
+  opacity: 0.5;
+}
+@media screen and (min-width: 1181px) and (max-width: 1780px) {
+  .pito-modal {
+    &--sm {
+      max-width: 35%;
+    }
+  }
+}
+@media screen and (min-width: 768px) and (max-width: 1180px) {
+  .pito-modal {
+    &--sm,
+    &--md {
+      max-width: 55%;
+    }
+  }
+}
+@media screen and (min-width: 360px) and (max-width: 767px) {
+  .pito-modal {
+    &--sm,
+    &--md {
+      max-width: 86%;
+    }
+  }
+}
+@media screen and (max-width: 360px) {
+  .pito-modal {
+    &--sm,
+    &--md {
+      max-width: 97%;
+    }
+  }
+}

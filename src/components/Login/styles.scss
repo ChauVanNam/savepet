@@ -1,0 +1,17 @@
+.login {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #f0f2f5;
+    .login-card {
+        padding: 40px 40px;
+        background: white;
+        border-radius: 16px;
+        .login-input {
+            min-width: 400px;
+            padding: 10px 20px;
+            margin-top: 15px;
+            text-indent: 0px;
+        }
+    }
+}

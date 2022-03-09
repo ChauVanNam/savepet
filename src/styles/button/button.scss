@@ -1,0 +1,256 @@
+.button_class {
+  padding: 0.5rem;
+  border-radius: 3px;
+  font-size: 14px;
+  color: #555555;
+  font-weight: 600;
+  border: 1px solid #c1c1c1;
+  border-radius: 3px;
+  padding-left: 1rem;
+
+  padding-right: 1rem;
+}
+
+.button_download {
+  background: #f8f8f8;
+}
+
+.button_edit {
+  background: #f8f8f8;
+}
+
+.button_find {
+  background: #e0e0e0;
+}
+
+.button_create_user {
+  background: #f8f8f8;
+  border: none;
+}
+
+.button-disable {
+  background-color: #e9ecef !important;
+  opacity: 1;
+}
+
+.button_find_table {
+  border-radius: 3px;
+  border: none;
+  padding-top: 0.5rem;
+  padding-right: 1rem;
+  padding-bottom: 0.5rem;
+  padding-left: 1rem;
+  background: #f8f8f8;
+  border: 1px solid #c1c1c1;
+  border-radius: 3px;
+}
+
+.button_find_table:hover {
+  background: #e0e0e0;
+  transition: 0.3s;
+}
+
+.button_reset {
+  background: #929292;
+}
+
+.button_step_success {
+  background: #f9744f;
+  border: 0 solid #c1c1c1;
+  border-radius: 3px;
+}
+
+.hide_span > span {
+  display: none;
+}
+
+.white {
+  color: white !important;
+}
+
+.button_delete {
+  background-image: linear-gradient(180deg, #f85359 3%, #ff3232 98%);
+
+  :hover {
+    background-color: #fff0eb;
+    transition: 0.3s;
+  }
+}
+
+.button_create {
+  background: #ee392a;
+  border: 1px solid #ee392a;
+}
+
+.button_back {
+  background: #ffffff;
+  border: 1px solid #d9d9d9;
+  color: #595959 !important;
+
+  &:hover {
+    background-color: #fff0eb;
+    transition: 0.3s;
+  }
+}
+
+.button_create:hover {
+  background-color: #ee1200;
+  transition: 0.3s;
+}
+
+.button_gray {
+  background-color: #d0d6de;
+  border: 1px solid #d0d6de;
+}
+
+.button_edit:hover {
+  background-color: #d0d6de;
+  transition: 0.3s;
+  color: #929292;
+}
+
+.button_orders_find {
+  background: #1890ff;
+  border-radius: 0 4px 4px 0;
+  font-size: 16px;
+  color: #ffffff;
+  line-height: 24px;
+}
+
+.button_add_food {
+  background: #f8f8f8;
+}
+
+.button_add_pricing {
+  background: #f8f8f8;
+}
+
+.button_add_food > span {
+  padding-right: 0px !important;
+}
+
+.button_back_modal {
+  background: #f8f8f8;
+  border: 1px solid #c1c1c1;
+  border-radius: 4px;
+  font-size: 14px;
+  color: rgba(0, 0, 0, 0.65);
+  text-align: center;
+  // border:0;
+  line-height: 22px;
+}
+
+.button_add_modal {
+  background: #ee392a !important;
+  border-radius: 4px;
+  font-size: 14px;
+  color: #ffffff !important;
+  text-align: center;
+  line-height: 22px;
+  border: 1px solid #ee392a;
+}
+
+.button_edit_menu {
+  background: #ee392a !important;
+  border-radius: 3px;
+  font-size: 14px;
+  color: #ffffff !important;
+  border: 1px solid #ee392a;
+}
+
+.button_delete_menu {
+  border: 1px solid #ee392a;
+  border-radius: 3px;
+  font-size: 14px;
+  color: #ee392a;
+  background: white;
+
+  &:hover {
+    background-color: #fff0eb;
+    color: #ee392a;
+    transition: 0.3s;
+  }
+}
+
+.cancel_button {
+  background: #8f9aa8;
+  border-radius: 3px;
+  font-size: 15px;
+  color: #ffffff;
+  border: 1px solid #8f9aa8;
+}
+
+.refresh_button {
+  border: 1px solid #b6b6b6;
+  border-radius: 4px;
+}
+
+.btn-pito-outline:hover {
+  color: #fff !important;
+  border-color: #ee392a !important;
+  background-color: #ee392a !important;
+}
+
+.btn-pito-btn-style {
+  background-color: #ee392a;
+  border-color: #ee392a !important;
+  color: white !important;
+}
+
+.btn-pito-btn-style:hover {
+  color: white !important;
+}
+
+button:disabled,
+button[disabled] {
+  border: 1px solid #d9d9d9;
+  background-color: #f5f5f5 !important;
+  color: #b6b6b6 !important;
+}
+
+.link-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  color: #5e72e4;
+  font-weight: normal;
+}
+
+.button_save_modal {
+  font-weight: 500;
+  background: #ee392a !important;
+  border-radius: 4px;
+  font-size: 14px;
+  color: #ffffff !important;
+  padding: 10px 20px;
+  min-width: 85px;
+  text-align: center;
+  line-height: 13px;
+  border: 1px solid #ee392a;
+}
+
+.button_cancle_modal {
+  font-weight: 500;
+  background: #ffffff !important;
+  border-radius: 4px;
+  font-size: 14px;
+  color: black !important;
+  padding: 10px 20px;
+  min-width: 102px;
+  text-align: center;
+  line-height: 13px;
+  border: 1px solid #d9d9d9;
+}
+
+.button_pito_border {
+  background: #ffffff !important;
+  border-radius: 4px;
+  font-size: 14px;
+  color: #EF3D2A !important;
+  padding: 8px 24px;
+  min-width: 111px;
+  text-align: center;
+  font-weight: bold;
+  line-height: 24px;
+  border: 1px solid #EF3D2A;
+}

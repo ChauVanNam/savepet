@@ -6,12 +6,24 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "export": "next export"
   },
   "dependencies": {
+    "firebase": "^9.6.8",
+    "firebase-tools": "^10.2.2",
+    "formik": "^2.2.9",
+    "js-cookie": "^3.0.1",
     "next": "12.1.0",
     "react": "17.0.2",
-    "react-dom": "17.0.2"
+    "react-dom": "17.0.2",
+    "react-loader-spinner": "^3.1.14",
+    "react-loading-overlay": "^1.0.1",
+    "react-modal": "^3.14.4",
+    "sass": "^1.49.9",
+    "simple-crypto-js": "^3.0.1",
+    "unstated-next": "^1.1.0",
+    "yup": "^0.32.11"
   },
   "devDependencies": {
     "eslint": "8.10.0",
