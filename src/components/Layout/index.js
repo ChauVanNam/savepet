@@ -1,12 +1,15 @@
-import React from "react";
-import Header from "./Header";
+import React, { useState, createContext } from "react"
+import Header from "./Header"
+import CreatePost from "../CreatePost"
 
-const Layout = ({ children }) => {
+export const LayoutContext = createContext()
+
+const Layout = ({ children, setIsCreatePost, isCreatePost }) => {
   return (
     <div>
-      <Header />
-      <main>{children}</main>
+      <Header setIsCreatePost={setIsCreatePost} />
+      <main className="main-layout">{children}</main>
     </div>
-  );
-};
+  )
+}
 export default Layout

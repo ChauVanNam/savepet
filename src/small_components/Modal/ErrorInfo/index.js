@@ -1,18 +1,18 @@
-import React, { useState } from "react";
-import Modal from "react-modal";
-import { customStyles } from "../styles";
-import { ModalContainer } from "../../../container/modal";
+import React, { useState } from "react"
+import Modal from "react-modal"
+import { customStyles } from "../styles"
+import { ModalContainer } from "../../../container/modal"
 
 function ModalErrorInfo() {
-  const modal = ModalContainer.useContainer();
-  const data = modal.modalErrorInfo;
-  const [isLoading, setIsLoading] = useState(false);
+  const modal = ModalContainer.useContainer()
+  const data = modal.modalErrorInfo
+  const [isLoading, setIsLoading] = useState(false)
   function onSubmit() {
-    if (isLoading) return;
+    if (isLoading) return
     if (data.onSubmit) {
-      setIsLoading(true);
-      data.onSubmit(data.data);
-      setIsLoading(false);
+      setIsLoading(true)
+      data.onSubmit(data.data)
+      setIsLoading(false)
     }
   }
 
@@ -24,7 +24,7 @@ function ModalErrorInfo() {
       onAction: null,
       buttonText: null,
       onSubmit: null,
-    });
+    })
   }
 
   return (
@@ -70,7 +70,7 @@ function ModalErrorInfo() {
         </div>
       </React.Fragment>
     </Modal>
-  );
+  )
 }
 
-export default ModalErrorInfo;
+export default ModalErrorInfo

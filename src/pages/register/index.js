@@ -1,0 +1,34 @@
+import React, { useEffect, useState } from "react"
+import cookie from "js-cookie"
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  onAuthStateChanged,
+  signOut,
+} from "firebase/auth"
+import { auth } from "../../../firebase.config"
+import { useRouter } from "next/router"
+import Layout from "../../components/Login/layout"
+import LoginPage from "../../components/Login"
+import RegisterPage from "../../components/Register"
+
+export default function Login() {
+  const router = useRouter()
+  const [registerEmail, setRegisterEmail] = useState("")
+  const [registerPassword, setRegisterPassword] = useState("")
+  const [loginEmail, setLoginEmail] = useState("")
+  const [loginPassword, setLoginPassword] = useState("")
+  const [user, setUser] = useState({})
+
+  useEffect(() => {
+    onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser)
+    })
+  })
+
+  return (
+    <Layout>
+      <RegisterPage />
+    </Layout>
+  )
+}

@@ -1,22 +1,22 @@
-import { useRouter } from "next/router";
-import React from "react";
-import Modal from "react-modal";
-import { ModalContainer } from "../../../container/modal";
-import { formStyles } from "../styles";
+import { useRouter } from "next/router"
+import React from "react"
+import Modal from "react-modal"
+import { ModalContainer } from "../../../container/modal"
+import { formStyles } from "../styles"
 
 function ModalForm() {
-  const router = useRouter();
-  const modal = ModalContainer.useContainer();
-  const data = modal.modalForm;
+  const router = useRouter()
+  const modal = ModalContainer.useContainer()
+  const data = modal.modalForm
   function onSubmit() {
     if (data) {
       if (data.url) {
-        router.push(data.url);
+        router.push(data.url)
       } else {
-        modal.handleModalForm({ isShow: false });
+        modal.handleModalForm({ isShow: false })
       }
     }
-    return;
+    return
   }
 
   function onCancel() {
@@ -28,7 +28,7 @@ function ModalForm() {
       onAction: null,
       buttonText: null,
       onSubmit: null,
-    });
+    })
   }
 
   return (
@@ -57,9 +57,9 @@ function ModalForm() {
               className={`float-right cursor-pointer`}
               onClick={() => {
                 if (data?.onActionCancel) {
-                  data.onActionCancel();
+                  data.onActionCancel()
                 } else {
-                  onCancel();
+                  onCancel()
                 }
               }}
             >
@@ -78,7 +78,7 @@ function ModalForm() {
         </div>
       </React.Fragment>
     </Modal>
-  );
+  )
 }
 
-export default ModalForm;
+export default ModalForm

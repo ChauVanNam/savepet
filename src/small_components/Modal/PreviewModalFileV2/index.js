@@ -20,7 +20,7 @@ function PreviewModalFile({
           type="button"
           onClick={() =>
             setUrlIdx(
-              preState =>
+              (preState) =>
                 (preState - 1 + data?.images?.length) %
                 Math.min(data?.images?.length, 5)
             )
@@ -51,7 +51,7 @@ function PreviewModalFile({
           type="button"
           onClick={() =>
             setUrlIdx(
-              preState => (preState + 1) % Math.min(data?.images?.length, 5)
+              (preState) => (preState + 1) % Math.min(data?.images?.length, 5)
             )
           }
         >

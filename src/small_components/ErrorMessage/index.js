@@ -3,9 +3,9 @@ import React from "react"
 
 const ErrorMessage = ({ name = "" }) => {
   return (
-    <Message name={name} render={msg => <p className={`error`}>{msg}</p>} />
+    <Message name={name} render={(msg) => <p className={`error`}>{msg}</p>} />
   )
 }
 
 export default ErrorMessage
-export {ErrorMessage}
+export { ErrorMessage }

@@ -1,13 +1,13 @@
-import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
-import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
-import { withModal } from "../../container/modal";
-import Modal from "../../small_components/Modal";
+import { useRouter } from "next/router"
+import React, { useEffect, useState } from "react"
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
+import { withModal } from "../../container/modal"
+import Modal from "../../small_components/Modal"
 // import SEOHead from "../Layout/SEOHead"
 
 const Layout = ({ children, title }) => {
-  const router = useRouter();
-  const [isLoading, setIsLoading] = useState(true);
+  const router = useRouter()
+  const [isLoading, setIsLoading] = useState(true)
 
   //   const checkLoggedIn = () => {
   //     const flag = isLoggedIn();
@@ -28,7 +28,7 @@ const Layout = ({ children, title }) => {
       <main>{children}</main>
       <Modal />
     </React.Fragment>
-  );
-};
+  )
+}
 
-export default withModal(Layout);
+export default withModal(Layout)

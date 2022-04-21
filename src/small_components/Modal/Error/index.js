@@ -1,24 +1,22 @@
-import { useRouter } from "next/router";
-import React from "react";
-import Modal from "react-modal";
-import { customStyles } from "../styles";
-import { ModalContainer } from "../../../container/modal";
+import { useRouter } from "next/router"
+import React from "react"
+import Modal from "react-modal"
+import { customStyles } from "../styles"
+import { ModalContainer } from "../../../container/modal"
 
 function ModalError() {
-  const router = useRouter();
-  const modal = ModalContainer.useContainer();
-  const data = modal.modalError;
-  console.log(modal);
-
+  const router = useRouter()
+  const modal = ModalContainer.useContainer()
+  const data = modal.modalError
   function onSubmit() {
     if (data) {
       if (data.url) {
-        router.push(data.url);
+        router.push(data.url)
       } else {
-        modal.handleModalError({ isShow: false });
+        modal.handleModalError({ isShow: false })
       }
     }
-    return;
+    return
   }
 
   return (
@@ -79,7 +77,7 @@ function ModalError() {
         </div>
       </React.Fragment>
     </Modal>
-  );
+  )
 }
 
-export default ModalError;
+export default ModalError

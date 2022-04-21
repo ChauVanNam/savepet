@@ -41,13 +41,13 @@ const ModalContent = ({
     }
   }, [])
 
-  useEffect(() => {
-    if (isOpen) {
-      disableBodyScroll(contentRef.current)
-    } else {
-      enableBodyScroll(contentRef.current)
-    }
-  }, [isOpen, contentRef])
+  // useEffect(() => {
+  //   if (isOpen) {
+  //     disableBodyScroll(contentRef.current)
+  //   } else {
+  //     enableBodyScroll(contentRef.current)
+  //   }
+  // }, [isOpen, contentRef])
 
   const handleInitialShadow = useCallback((body, footer, header) => {
     try {
@@ -70,7 +70,7 @@ const ModalContent = ({
   }, [])
 
   const handleScroll = useCallback(
-    (footer, header, isImage) => event => {
+    (footer, header, isImage) => (event) => {
       try {
         const { target } = event
         const { scrollHeight, scrollTop, clientHeight } = target
@@ -118,7 +118,7 @@ const ModalContent = ({
   useLayoutEffect(() => {
     if (bodyRef.current && footerRef.current && headerRef.current) {
       const elemnt = customBodyRefCurrent || bodyRef.current
-      const resizeObserver = new ResizeObserver(entries => {
+      const resizeObserver = new ResizeObserver((entries) => {
         handleInitialShadow(elemnt, footerRef.current, headerRef.current)
       })
 
