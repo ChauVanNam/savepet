@@ -22,6 +22,15 @@
     &--info {
         padding: 10px;
     }
+  
+}
+.slick-dots {
+    bottom: 0px !important;
+}
+.slick-active {
+    circle {
+        opacity: 1 !important;
+    }
 }
 .post-image {
     object-fit: cover;
@@ -35,7 +44,7 @@
 }
 .post-image-container {
     position: relative;
-    padding-bottom: 124.352% !important;
+    padding-bottom: 80% !important;
     display: block;
     overflow: hidden;
     align-items: stretch;

@@ -4,9 +4,10 @@ import { collection, getDocs, query, where } from "firebase/firestore"
 import Layout, { LayoutContext } from "../components/Layout"
 import useGetPosts from "../hooks/useGetPosts"
 import { isLoggedIn } from "../util/auth"
-import { HeartIcon, BookMark, Comment } from "../small_components/Icon"
+import { HeartIcon, BookMark, Comment, Dot } from "../small_components/Icon"
 import Loader from "react-loader-spinner"
 import { db } from "../../firebase.config"
+import Slider from "react-slick"
 import PostDetailModal from "../components/Posts/Detail"
 import CreatePost from "../components/CreatePost"
 import { getUserInfo } from "../util/auth"
@@ -24,10 +25,12 @@ export default function Home() {
   })
 
   const [posts, setPosts] = useState([])
-  const postColectionRef = collection(db, "post")
+  const postColectionRef = collection(db, "posts")
   const likeColectionRef = collection(db, "likes")
+  const bookmarksColectionRef = collection(db, "bookmarks")
   const commentcolectionRef = collection(db, "comments")
   const [isOpenDetail, setIsOpenDetail] = useState(false)
+  const [bookmarks, setBookmarks] = useState(false)
   const [detailData, setDetaiData] = useState()
   const [isCreatePost, setIsCreatePost] = useState(false)
   const [commentsDetail, setCommentsDetail] = useState([])
@@ -45,6 +48,64 @@ export default function Home() {
     }
     _post.push(list)
     setPosts((prevState) => [...prevState, ...[list]])
+  }
+
+  function PrevArrow(props) {
+    const { className, style, onClick } = props
+    return (
+      <img
+        className={className}
+        style={{
+          ...style,
+          display: "block",
+          height: 24,
+          width: 24,
+          left: 16,
+          zIndex: 1000,
+        }}
+        onClick={onClick}
+        src="/images/modal/left-arrow-ic.svg"
+        alt=""
+      />
+    )
+  }
+
+  function NextArrow(props) {
+    const { className, style, onClick } = props
+    return (
+      <img
+        src="/images/modal/right-arrow-ic.svg"
+        className={className}
+        style={{
+          ...style,
+          display: "block",
+          height: 24,
+          width: 24,
+          right: 16,
+          zIndex: 1000,
+        }}
+        onClick={onClick}
+        alt="next_arrow"
+      />
+    )
+  }
+
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    customPaging: function (i) {
+      return (
+        <a>
+          <Dot />
+        </a>
+      )
+    },
+    prevArrow: <PrevArrow />,
+    nextArrow: <NextArrow />,
+    dotsClass: "slick-dots slick-thumb",
   }
 
   const getAllPosts = async () => {
@@ -70,6 +131,17 @@ export default function Home() {
     }
   }
 
+  const getAllBookmarks = async () => {
+    const data = await getDocs(bookmarksColectionRef)
+    if (data) {
+      let bookmarks = []
+      data.docs.map((doc, index) => {
+        bookmarks.push({ ...doc.data(), id: doc.id })
+      })
+      setBookmarks(bookmarks)
+    }
+  }
+
   const getAllComments = async () => {
     const data = await getDocs(commentcolectionRef)
     if (data) {
@@ -87,6 +159,7 @@ export default function Home() {
     getAllLikes()
     getAllPosts()
     getAllComments()
+    getAllBookmarks()
   }, [])
 
   const handleRefreshData = () => {
@@ -102,6 +175,23 @@ export default function Home() {
       if (item.post_id === post_id) {
         count++
       }
+      if (item.post_id === post_id && user.id === item.user_id) {
+        check = true
+        id = item.id
+      }
+    })
+    return {
+      check: check,
+      id: id,
+      count: count,
+    }
+  }
+
+  const checkIsSaved = (post_id) => {
+    let check = false
+    let id = ""
+    let count = 0
+    bookmarks.map((item) => {
       if (item.post_id === post_id && user.id === item.user_id) {
         check = true
         id = item.id
@@ -146,6 +236,7 @@ export default function Home() {
             <PostDetailModal
               setIsOpen={setIsOpenDetail}
               post={detailData}
+              handleRefreshData={handleRefreshData}
               comments={commentsDetail}
               isOpen={isOpenDetail}
             />
@@ -158,9 +249,13 @@ export default function Home() {
                         width={36}
                         height={36}
                         className="mr-3 p-1"
+                        onClick={() =>
+                          router.push(`/profile/${post?.user?.id}`)
+                        }
                         style={{
                           borderRadius: "50%",
                           border: "1px solid #d9d9d9",
+                          cursor: "pointer",
                         }}
                         alt="post-img"
                         src={
@@ -176,22 +271,27 @@ export default function Home() {
                       <MoreIcon />
                     </div>
                   </div>
-                  {post?.image && (
-                    <div className="post-image-container">
-                      <img
-                        className="post-image"
-                        alt="post-img"
-                        src={post?.image}
-                      />
-                    </div>
-                  )}
+                  <Slider {...settings}>
+                    {post?.images.length > 0 &&
+                      post.images.map((image) => (
+                        <div className="post-image-container">
+                          <img
+                            className="post-image"
+                            alt="post-img"
+                            src={image.url}
+                          />
+                        </div>
+                      ))}
+                  </Slider>
                   <div className="post-container--info">
                     <p className="post-title mb-0">{post?.title}</p>
                     <p className="post-description mb-0">{post?.description}</p>
-                    <p className="post-description mb-0">
+                    <p className="post-description font-weight-bold mt-2 text-danger mb-0">
                       Số điện thoại: {post?.phone}
                     </p>
-                    <p className="post-description">Địa chỉ: {post?.address}</p>
+                    <p className="post-description font-weight-bold text-danger mb-0">
+                      Địa chỉ: {post?.address}
+                    </p>
                   </div>
                   <div className="d-flex justify-content-between mb-1 px-2">
                     <div>
@@ -209,24 +309,29 @@ export default function Home() {
                         className="ml-3 cursor-pointer"
                       />
                     </div>
-                    <BookMark />
+                    <BookMark
+                      saved={checkIsSaved(post.id)}
+                      post={post}
+                      user_id={user.id}
+                      getAllBookmarks={getAllBookmarks}
+                    />
                   </div>
                   {checkIsLiked(post.id).count > 0 && (
-                    <div className="px-2 fo-14">
+                    <div className="px-2 fo-14 mt-2">
                       {checkIsLiked(post.id).count} likes
                     </div>
                   )}
                   {getPostComment(post.id).length > 0 && (
-                    <span
+                    <p
                       onClick={() => {
                         setIsOpenDetail(true)
                         setDetaiData(post)
                         setCommentsDetail(getPostComment(post.id))
                       }}
-                      className="px-2 fo-14 cursor-pointer"
+                      className="px-2 fo-14 mb-2 cursor-pointer"
                     >
                       Xem tất cả {getPostComment(post.id).length} bình luận
-                    </span>
+                    </p>
                   )}
 
                   <CommentField

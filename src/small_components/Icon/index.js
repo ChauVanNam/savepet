@@ -59,28 +59,67 @@ export const HeartIcon = ({ post_id, user_id, like, getAllLikes }) => {
   )
 }
 
-export const BookMark = () => {
+export const BookMark = ({ post, user_id, saved, getAllBookmarks }) => {
+  const [isSaved, setIsSaved] = useState(saved.check)
+  const handleCreateLike = async () => {
+    await addDoc(collection(db, "bookmarks"), {
+      user_id: user_id,
+      post: post,
+    })
+  }
+  const handleDeleteLike = async () => {
+    await deleteDoc(doc(db, "bookmarks", saved.id))
+  }
+  const handleSaved = () => {
+    setIsSaved(true)
+    handleCreateLike()
+    getAllBookmarks()
+  }
+  const handleUnsaved = () => {
+    setIsSaved(false)
+    handleDeleteLike()
+    getAllBookmarks()
+  }
   return (
-    <svg
-      aria-label="Save"
-      className="cursor-pointer"
-      class="_8-yf5 "
-      color="#262626"
-      fill="#262626"
-      height="24"
-      role="img"
-      viewBox="0 0 24 24"
-      width="24"
-    >
-      <polygon
-        fill="none"
-        points="20 21 12 13.44 4 21 4 3 20 3 20 21"
-        stroke="currentColor"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width="2"
-      ></polygon>
-    </svg>
+    <>
+      {isSaved ? (
+        <svg
+          aria-label="Remove"
+          class="_8-yf5 "
+          color="#262626"
+          fill="#262626"
+          height="24"
+          onClick={() => handleUnsaved()}
+          role="img"
+          viewBox="0 0 24 24"
+          width="24"
+        >
+          <path d="M20 22a.999.999 0 01-.687-.273L12 14.815l-7.313 6.912A1 1 0 013 21V3a1 1 0 011-1h16a1 1 0 011 1v18a1 1 0 01-1 1z"></path>
+        </svg>
+      ) : (
+        <svg
+          aria-label="Save"
+          class="_8-yf5 "
+          color="#262626"
+          fill="#262626"
+          height="24"
+          onClick={() => handleSaved()}
+          style={{ cursor: "pointer" }}
+          role="img"
+          viewBox="0 0 24 24"
+          width="24"
+        >
+          <polygon
+            fill="none"
+            points="20 21 12 13.44 4 21 4 3 20 3 20 21"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+          ></polygon>
+        </svg>
+      )}
+    </>
   )
 }
 
@@ -156,7 +195,7 @@ export const BookMarkSM = () => {
   return (
     <svg
       aria-label="Saved"
-      class="_8-yf5 "
+      className=""
       color="#262626"
       fill="#262626"
       height="16"
@@ -210,6 +249,69 @@ export const CommentFace = () => {
       width="24"
     >
       <path d="M15.83 10.997a1.167 1.167 0 101.167 1.167 1.167 1.167 0 00-1.167-1.167zm-6.5 1.167a1.167 1.167 0 10-1.166 1.167 1.167 1.167 0 001.166-1.167zm5.163 3.24a3.406 3.406 0 01-4.982.007 1 1 0 10-1.557 1.256 5.397 5.397 0 008.09 0 1 1 0 00-1.55-1.263zM12 .503a11.5 11.5 0 1011.5 11.5A11.513 11.513 0 0012 .503zm0 21a9.5 9.5 0 119.5-9.5 9.51 9.51 0 01-9.5 9.5z"></path>
+    </svg>
+  )
+}
+
+export const Dot = () => {
+  return (
+    <svg
+      class="mb-4"
+      width="6"
+      height="6"
+      viewBox="0 0 6 6"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <circle opacity="0.5" cx="3" cy="3" r="3" fill="white"></circle>
+    </svg>
+  )
+}
+
+export const CreatePostIcon = ({ onClick }) => {
+  return (
+    <svg
+      aria-label="New Post"
+      onClick={() => onClick()}
+      class="_8-yf5 "
+      style={{ cursor: "pointer" }}
+      color="#262626"
+      fill="#262626"
+      height="24"
+      role="img"
+      viewBox="0 0 24 24"
+      width="24"
+    >
+      <path
+        d="M2 12v3.45c0 2.849.698 4.005 1.606 4.944.94.909 2.098 1.608 4.946 1.608h6.896c2.848 0 4.006-.7 4.946-1.608C21.302 19.455 22 18.3 22 15.45V8.552c0-2.849-.698-4.006-1.606-4.945C19.454 2.7 18.296 2 15.448 2H8.552c-2.848 0-4.006.699-4.946 1.607C2.698 4.547 2 5.703 2 8.552z"
+        fill="none"
+        stroke="currentColor"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+      ></path>
+      <line
+        fill="none"
+        stroke="currentColor"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        x1="6.545"
+        x2="17.455"
+        y1="12.001"
+        y2="12.001"
+      ></line>
+      <line
+        fill="none"
+        stroke="currentColor"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        x1="12.003"
+        x2="12.003"
+        y1="6.545"
+        y2="17.455"
+      ></line>
     </svg>
   )
 }

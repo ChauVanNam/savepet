@@ -79,8 +79,10 @@ const RegisterPage = () => {
           birthday: values.birthday,
           is_active: true,
           role: "USER",
-          avatar: "",
+          avatar: "https://start-up.vn/upload/photos/avatar.jpg",
           gender: values.gender,
+          background:
+            "https://itsfoss.com/wp-content/uploads/2016/12/ubuntu-1704-wallpaper-default.jpg",
           address: values.address,
         })
         // console.log(response)

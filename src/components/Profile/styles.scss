@@ -1,5 +1,13 @@
 .user_profile {
     padding: 0px 12vw;
+    .slick-dots {
+        bottom: -10px !important;
+    }
+    .slick-active {
+        circle {
+            opacity: 1 !important;
+        }
+    }
     .user_name {
         font-size: 24px;
         font-weight: bold;
@@ -7,4 +15,13 @@
     .user_posts {
         margin-top: 150px;
     }
+    .user_post_image {
+        border-radius: 8px;
+        height: 300px !important;
+    }
+}
+.avatar-drop-container {
+    border-radius: 50%;
+    width: 150px;
+    height: 150px;
 }

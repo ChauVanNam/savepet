@@ -30,6 +30,7 @@
     "react-loading-overlay": "^1.0.1",
     "react-modal": "^3.14.4",
     "react-select": "^5.2.2",
+    "react-slick": "^0.29.0",
     "sass": "^1.49.9",
     "simple-crypto-js": "^3.0.1",
     "unstated-next": "^1.1.0",

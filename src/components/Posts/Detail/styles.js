@@ -10,5 +10,6 @@ export const customStyles = {
     height: "80vh",
     border: "none",
     width: "600px",
+    zIndex: "99999",
   },
 }
