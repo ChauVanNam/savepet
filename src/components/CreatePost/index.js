@@ -29,10 +29,22 @@ import { getUserInfo } from "../../util/auth"
 
 const createPostSchema = Yup.object().shape({
   title: Yup.string().required("Vui lòng nhập tiêu đề"),
-  description: Yup.string().required("Vui lòng mô tả"),
+  description: Yup.string().required("Vui lòng nhập mô tả"),
   phone: Yup.string().required("Vui lòng nhập số điện thoại liên hệ"),
   address: Yup.string().required("Vui lòng nhập địa chỉ"),
 })
+
+const editorConfiguration = {
+  toolbar: ["bold", "italic", "link"],
+  link: {
+    defaultProtocol: "http://",
+  },
+  typing: {
+    transformations: {
+      remove: ["oneHalf", "oneThird", "twoThirds", "oneForth", "threeQuarters"],
+    },
+  },
+}
 
 const CreatePost = ({
   setIsCreatePost,
@@ -92,7 +104,7 @@ const CreatePost = ({
       }
     )
   }
-  const onSubmit = async (values) => {
+  const onSubmit = async (values, { resetForm }) => {
     try {
       if (isEdit) {
         const washingtonRef = doc(db, "posts", post.id)
@@ -100,28 +112,53 @@ const CreatePost = ({
           ...values,
           images: fileUrl || "",
           user_id: user.id,
+          createdAt: new Date().getTime(),
         })
-        // await updateDoc(collection(db, "posts"), {
-        //   ...values,
-        //   images: fileUrl || "",
-        //   user_id: user.id,
-        // })
       } else {
         await addDoc(collection(db, "posts"), {
           ...values,
           images: fileUrl || "",
           user_id: user.id,
+          createdAt: new Date().getTime(),
         })
       }
       handleRefreshData()
       setIsCreatePost(false)
+      resetForm()
+      setFileUrl([])
     } catch (error) {
       console.log(error)
     }
   }
+
+  // const editorRef = useRef()
+  // const [editorLoaded, setEditorLoaded] = useState(false)
+  // const { CKEditor, ClassicEditor } = editorRef.current || {}
+
+  // useEffect(() => {
+  //   editorRef.current = {
+  //     CKEditor: require("@ckeditor/ckeditor5-react"),
+  //     ClassicEditor: require("@ckeditor/ckeditor5-build-classic"),
+  //   }
+  //   setEditorLoaded(true)
+  // }, [])
+
+  const editorRef = useRef()
+  const [editorLoaded, setEditorLoaded] = useState(false)
+  const { CKEditor, ClassicEditor } = editorRef.current || {}
+
+  useEffect(() => {
+    editorRef.current = {
+      // CKEditor: require('@ckeditor/ckeditor5-react'), // depricated in v3
+      CKEditor: require("@ckeditor/ckeditor5-react").CKEditor,
+      ClassicEditor: require("@ckeditor/ckeditor5-build-classic"),
+    }
+    setEditorLoaded(true)
+  }, [])
   return (
     <div>
       <Formik
+        enableReinitialize
         onSubmit={onSubmit}
         initialValues={{
           title: post?.title ? post.title : "",
@@ -131,7 +168,7 @@ const CreatePost = ({
         }}
         validationSchema={createPostSchema}
       >
-        {({ values, handleSubmit, setFieldValue, isSubmitting }) => (
+        {({ values, handleSubmit, setFieldValue, isSubmitting, errors }) => (
           <Form>
             <PowerfullModal
               onSubmit={handleSubmit}
@@ -194,16 +231,32 @@ const CreatePost = ({
                   placeholder="Tiêu đề"
                   className="form-control w-100 mb-2"
                 />
+                {errors?.title && (
+                  <p className="error mt-0"> {errors?.title}</p>
+                )}
               </div>
               <div>
                 <label className="create-post--label">Chú thích:</label>
-                <Field
+                <CKEditor
+                  editor={ClassicEditor}
+                  data={values.description}
+                  onInit={(editor) => {}}
+                  config={editorConfiguration}
+                  onChange={(event, editor) => {
+                    const data = editor.getData()
+                    setFieldValue(`description`, data)
+                  }}
+                />
+                {/* <Field
                   style={{ minHeight: 200 }}
                   name="description"
                   as="textarea"
                   placeholder="Chú thích"
                   className="form-control w-100 mb-2"
-                />
+                /> */}
+                {errors?.description && (
+                  <p className="error mt-0"> {errors?.description}</p>
+                )}
               </div>
               <div>
                 <label className="create-post--label">Số điện thoại:</label>
@@ -215,6 +268,9 @@ const CreatePost = ({
                   placeholder="Số điện thoại liên hệ"
                   className="form-control w-100 mb-2"
                 />
+                {errors?.phone && (
+                  <p className="error mt-0"> {errors?.phone}</p>
+                )}
               </div>
               <div>
                 <label className="create-post--label">Địa chỉ:</label>
@@ -223,6 +279,9 @@ const CreatePost = ({
                   placeholder="Địa chỉ"
                   className="form-control w-100 mb-2"
                 />
+                {errors?.address && (
+                  <p className="error mt-0"> {errors?.address}</p>
+                )}
               </div>
             </PowerfullModal>
           </Form>

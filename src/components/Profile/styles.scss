@@ -1,5 +1,7 @@
 .user_profile {
-    padding: 0px 12vw;
+    // padding: 0px 12vw;
+    margin-top: 30px;
+    width: 100%;
     .slick-dots {
         bottom: -10px !important;
     }
@@ -16,12 +18,28 @@
         margin-top: 150px;
     }
     .user_post_image {
-        border-radius: 8px;
-        height: 300px !important;
+        // border-radius: 8px;
+        height: 293px !important;
     }
 }
 .avatar-drop-container {
     border-radius: 50%;
     width: 150px;
     height: 150px;
+}
+
+.react-tabs__tab-list {
+    display: flex;
+
+    border-top: 1px solid rgba(var(--b38,219,219,219),1);    justify-content: center;
+    .react-tabs__tab {
+        margin-top: -2px;
+        color: #8e8e8e;
+        border-bottom: none;
+    }
+    .react-tabs__tab--selected {
+        color: #262626;
+        border-bottom: none;
+       border-top: 1px solid rgba(var(--i1d,38,38,38),1);
+    }
 }

@@ -65,10 +65,15 @@ export const BookMark = ({ post, user_id, saved, getAllBookmarks }) => {
     await addDoc(collection(db, "bookmarks"), {
       user_id: user_id,
       post: post,
+      post_id: post.id,
     })
   }
   const handleDeleteLike = async () => {
-    await deleteDoc(doc(db, "bookmarks", saved.id))
+    try {
+      await deleteDoc(doc(db, "bookmarks", saved.id))
+    } catch (error) {
+      console.log(error)
+    }
   }
   const handleSaved = () => {
     setIsSaved(true)

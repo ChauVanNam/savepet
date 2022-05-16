@@ -12,6 +12,7 @@ const Comment = ({ user, post_id, getAllComments, parrent_id }) => {
           user: user,
           comment: values?.comment || "",
           parrent_id: parrent_id || null,
+          createdAt: new Date().getTime(),
         })
         getAllComments()
       }

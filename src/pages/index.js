@@ -1,6 +1,16 @@
 import { useRouter } from "next/router"
-import React, { useEffect, useState, useContext } from "react"
-import { collection, getDocs, query, where } from "firebase/firestore"
+import React, { useEffect, useState, useContext, useMemo } from "react"
+import {
+  collection,
+  getDocs,
+  query,
+  doc,
+  where,
+  updateDoc,
+  orderBy,
+  addDoc,
+  limit,
+} from "firebase/firestore"
 import Layout, { LayoutContext } from "../components/Layout"
 import useGetPosts from "../hooks/useGetPosts"
 import { isLoggedIn } from "../util/auth"
@@ -17,7 +27,8 @@ import CommentField from "../components/Posts/Comment"
 
 export default function Home() {
   const router = useRouter()
-  // const { posts } = useGetPosts()
+  const user = getUserInfo()
+
   useEffect(() => {
     if (!isLoggedIn()) {
       router.push("/login")
@@ -25,8 +36,11 @@ export default function Home() {
   })
 
   const [posts, setPosts] = useState([])
+  const [userData, setUserData] = useState({})
   const postColectionRef = collection(db, "posts")
   const likeColectionRef = collection(db, "likes")
+  const followColectionRef = collection(db, "follow")
+  const userColectionRef = collection(db, "users")
   const bookmarksColectionRef = collection(db, "bookmarks")
   const commentcolectionRef = collection(db, "comments")
   const [isOpenDetail, setIsOpenDetail] = useState(false)
@@ -35,6 +49,8 @@ export default function Home() {
   const [isCreatePost, setIsCreatePost] = useState(false)
   const [commentsDetail, setCommentsDetail] = useState([])
   const [comments, setComments] = useState([])
+  const [isActionOpen, setIsActionOpen] = useState(false)
+  const [allUser, setAllUser] = useState([])
   const [likes, setLikes] = useState([])
 
   const getUserInfomation = async (user_id, index, list) => {
@@ -48,6 +64,33 @@ export default function Home() {
     }
     _post.push(list)
     setPosts((prevState) => [...prevState, ...[list]])
+  }
+
+  const [getAlluserLoading, setGetAllUserLoading] = useState(false)
+  const getAllUser = async () => {
+    try {
+      const data = await getDocs(userColectionRef)
+      if (data) {
+        let users = []
+        data.docs.map((doc, index) => {
+          users.push({ ...doc.data() })
+        })
+        setAllUser(users)
+        setGetAllUserLoading(false)
+      }
+    } catch (error) {
+      setGetAllUserLoading(false)
+    }
+  }
+
+  const getUserInfoData = async () => {
+    try {
+      const q = query(collection(db, "users"), where("id", "==", user.id))
+      const data = await getDocs(q)
+      data.forEach((doc) => {
+        setUserData({ ...doc.data(), document_id: doc.id })
+      })
+    } catch (error) {}
   }
 
   function PrevArrow(props) {
@@ -109,7 +152,8 @@ export default function Home() {
   }
 
   const getAllPosts = async () => {
-    const data = await getDocs(postColectionRef)
+    const q = query(postColectionRef, orderBy("createdAt", "asc"))
+    const data = await getDocs(q)
     if (data) {
       data.docs.map((doc, index) => {
         getUserInfomation(doc.data().user_id, index, {
@@ -131,6 +175,19 @@ export default function Home() {
     }
   }
 
+  const [follow, setFollow] = useState([])
+  const getAllFollow = async () => {
+    const q = query(collection(db, "follow"), where("user_id", "==", user?.id))
+    const data = await getDocs(q)
+    if (data) {
+      let follow = []
+      data.docs.map((doc, index) => {
+        follow.push(doc.data())
+      })
+      setFollow(follow)
+    }
+  }
+
   const getAllBookmarks = async () => {
     const data = await getDocs(bookmarksColectionRef)
     if (data) {
@@ -143,7 +200,9 @@ export default function Home() {
   }
 
   const getAllComments = async () => {
-    const data = await getDocs(commentcolectionRef)
+    const q = query(commentcolectionRef, orderBy("createdAt", "asc"))
+
+    const data = await getDocs(q)
     if (data) {
       let comments = []
       data.docs.map((doc, index) => {
@@ -153,15 +212,37 @@ export default function Home() {
     }
   }
 
-  const user = getUserInfo()
+  const handleFollow = async (follow) => {
+    await addDoc(collection(db, "follow"), {
+      user_id: user.id,
+      follow: follow,
+    })
+  }
+
+  const handleFollower = async (follower) => {
+    await addDoc(collection(db, "follower"), {
+      user_id: follower.id,
+      follower: user,
+    })
+  }
 
   useEffect(() => {
     getAllLikes()
     getAllPosts()
     getAllComments()
     getAllBookmarks()
+    getAllFollow()
   }, [])
 
+  useEffect(() => {
+    if (userData) {
+      getAllUser()
+    }
+  }, [userData])
+
+  useEffect(() => {
+    getUserInfoData()
+  }, [])
   const handleRefreshData = () => {
     setPosts([])
     getAllPosts()
@@ -175,7 +256,7 @@ export default function Home() {
       if (item.post_id === post_id) {
         count++
       }
-      if (item.post_id === post_id && user.id === item.user_id) {
+      if (item.post_id === post_id && user?.id === item.user_id) {
         check = true
         id = item.id
       }
@@ -190,9 +271,8 @@ export default function Home() {
   const checkIsSaved = (post_id) => {
     let check = false
     let id = ""
-    let count = 0
     bookmarks.map((item) => {
-      if (item.post_id === post_id && user.id === item.user_id) {
+      if (item.post.id === post_id && user.id === item.user_id) {
         check = true
         id = item.id
       }
@@ -200,7 +280,6 @@ export default function Home() {
     return {
       check: check,
       id: id,
-      count: count,
     }
   }
 
@@ -214,6 +293,21 @@ export default function Home() {
     return _comments
   }
 
+  useEffect(() => {
+    if (detailData) {
+      let newComment = getPostComment(detailData?.id)
+      setCommentsDetail(newComment)
+    }
+  }, [comments])
+
+  const checkIsFollow = (user) => {
+    let isFollow = true
+    follow.forEach((item) => {
+      if (item?.follow?.id === user?.id) isFollow = false
+    })
+    return isFollow
+  }
+
   return (
     <Layout setIsCreatePost={setIsCreatePost} isCreatePost={isCreatePost}>
       <CreatePost
@@ -223,7 +317,7 @@ export default function Home() {
       />
       <div className="d-flex align-items-center flex-column">
         {posts.length <= 0 ? (
-          <div className={`text-center`}>
+          <div style={{ width: 614 }} className={`text-center`}>
             <Loader
               type="MutatingDots"
               color="#EE392A"
@@ -233,15 +327,23 @@ export default function Home() {
           </div>
         ) : (
           <>
-            <PostDetailModal
-              setIsOpen={setIsOpenDetail}
-              post={detailData}
-              handleRefreshData={handleRefreshData}
-              comments={commentsDetail}
-              isOpen={isOpenDetail}
-            />
-            {posts.map((post) => (
-              <div className="mt-3" key={post.id}>
+            {isOpenDetail && (
+              <PostDetailModal
+                setIsOpen={setIsOpenDetail}
+                post={detailData}
+                getAllBookmarks={getAllBookmarks}
+                checkIsSaved={checkIsSaved}
+                getAllComments={getAllComments}
+                handleRefreshData={handleRefreshData}
+                comments={commentsDetail}
+                isOpen={isOpenDetail}
+                checkIsLiked={checkIsLiked}
+                getAllLikes={getAllLikes}
+              />
+            )}
+
+            {posts.map((post, index) => (
+              <div className="mt-3" key={index}>
                 <div className="post-container" style={{ width: 614 }}>
                   <div className="p-2 d-flex align-items-center justify-content-between">
                     <div className="d-flex align-items-center">
@@ -266,9 +368,9 @@ export default function Home() {
                       <p className="m-0 fo-14 font-weight-bold">
                         {post?.user?.fullName || ""}
                       </p>
-                    </div>
-                    <div className="position-relative">
-                      <MoreIcon />
+                      <MoreIcon
+                        onClick={() => router.push(`/post/${post.id}`)}
+                      />
                     </div>
                   </div>
                   <Slider {...settings}>
@@ -285,55 +387,60 @@ export default function Home() {
                   </Slider>
                   <div className="post-container--info">
                     <p className="post-title mb-0">{post?.title}</p>
-                    <p className="post-description mb-0">{post?.description}</p>
+                    <p
+                      className="post-description mb-0"
+                      dangerouslySetInnerHTML={{
+                        __html: post?.description || ``,
+                      }}
+                    ></p>{" "}
                     <p className="post-description font-weight-bold mt-2 text-danger mb-0">
                       Số điện thoại: {post?.phone}
                     </p>
                     <p className="post-description font-weight-bold text-danger mb-0">
                       Địa chỉ: {post?.address}
                     </p>
-                  </div>
-                  <div className="d-flex justify-content-between mb-1 px-2">
-                    <div>
-                      <HeartIcon
-                        like={checkIsLiked(post.id)}
-                        post_id={post.id}
+                    <div className="d-flex justify-content-between my-1">
+                      <div>
+                        <HeartIcon
+                          like={checkIsLiked(post.id)}
+                          post_id={post.id}
+                          user_id={user.id}
+                          getAllLikes={getAllLikes}
+                        />
+                        <Comment
+                          onClick={() => {
+                            setIsOpenDetail(true)
+                            setDetaiData(post)
+                            setCommentsDetail(getPostComment(post.id))
+                          }}
+                          className="ml-3 cursor-pointer"
+                        />
+                      </div>
+                      <BookMark
+                        saved={checkIsSaved(post.id)}
+                        post={post}
                         user_id={user.id}
-                        getAllLikes={getAllLikes}
+                        getAllBookmarks={getAllBookmarks}
                       />
-                      <Comment
+                    </div>
+                    {checkIsLiked(post.id).count > 0 && (
+                      <div className="fo-14 mt-2">
+                        {checkIsLiked(post.id).count} likes
+                      </div>
+                    )}
+                    {getPostComment(post.id).length > 0 && (
+                      <p
                         onClick={() => {
                           setIsOpenDetail(true)
                           setDetaiData(post)
+                          setCommentsDetail(getPostComment(post.id))
                         }}
-                        className="ml-3 cursor-pointer"
-                      />
-                    </div>
-                    <BookMark
-                      saved={checkIsSaved(post.id)}
-                      post={post}
-                      user_id={user.id}
-                      getAllBookmarks={getAllBookmarks}
-                    />
+                        className="fo-14 mb-0 cursor-pointer"
+                      >
+                        Xem tất cả {getPostComment(post.id).length} bình luận
+                      </p>
+                    )}
                   </div>
-                  {checkIsLiked(post.id).count > 0 && (
-                    <div className="px-2 fo-14 mt-2">
-                      {checkIsLiked(post.id).count} likes
-                    </div>
-                  )}
-                  {getPostComment(post.id).length > 0 && (
-                    <p
-                      onClick={() => {
-                        setIsOpenDetail(true)
-                        setDetaiData(post)
-                        setCommentsDetail(getPostComment(post.id))
-                      }}
-                      className="px-2 fo-14 mb-2 cursor-pointer"
-                    >
-                      Xem tất cả {getPostComment(post.id).length} bình luận
-                    </p>
-                  )}
-
                   <CommentField
                     getAllComments={getAllComments}
                     post_id={post.id}
@@ -343,6 +450,80 @@ export default function Home() {
               </div>
             ))}
           </>
+        )}
+      </div>
+      <div className="mt-3 ml-5">
+        <img
+          height={56}
+          width={56}
+          style={{ borderRadius: "50%", objectFit: "cover" }}
+          src={userData?.avatar}
+        />
+        <span
+          style={{ fontFamily: "GoogleSans-Medium" }}
+          className="fo-14 font-weight-bold ml-2"
+        >
+          {userData.fullName}
+        </span>
+
+        {follow && (
+          <div className="suggest-friend">
+            <p className="mb-0 suggest-friend--title mt-3">
+              Đề xuất dành cho bạn
+            </p>
+            <div className="mt-3">
+              {allUser.map((user) => (
+                <>
+                  {checkIsFollow(user) && (
+                    <div className="mt-3 d-flex align-items-center justify-content-between">
+                      <div className="d-flex align-items-center">
+                        <img
+                          onClick={() => router.push(`/profile/${user.id}`)}
+                          height={40}
+                          width={40}
+                          style={{ borderRadius: "50%", objectFit: "cover" }}
+                          src={
+                            user?.avatar ||
+                            "https://start-up.vn/upload/photos/avatar.jpg"
+                          }
+                        />
+                        <div className="ml-2">
+                          <span className="fo-14 font-weight-bold">
+                            {user?.fullName}{" "}
+                          </span>
+                          <p
+                            style={{ color: "#8c8c8c" }}
+                            className="fo-12 mb-0"
+                          >
+                            Đề xuất cho bạn
+                          </p>
+                        </div>
+                      </div>
+                      <span
+                        style={{ color: "#0095f6" }}
+                        onClick={() => {
+                          handleFollow(user)
+                          handleFollower(user)
+                          // handleFollow(user)
+                          // handleFollower(user)
+                          getUserInfoData()
+                          getAllFollow()
+                        }}
+                        className="fo-12 ml-5 cursor-pointer font-weight-bold"
+                      >
+                        Theo dõi
+                      </span>
+                    </div>
+                  )}
+                </>
+              ))}
+            </div>
+            <div className="d-flex align-items-center w-100 mt-4">
+              <span style={{ color: "#8c8c8c" }} className="text-center fo-12">
+                © 2022 savepet from Chauvannam
+              </span>
+            </div>
+          </div>
         )}
       </div>
     </Layout>

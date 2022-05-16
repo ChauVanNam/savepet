@@ -18,7 +18,6 @@ function useGetPosts() {
     _post.push(list)
     setPosts((prevState) => [...prevState, ...[list]])
   }
-  console.log(posts)
 
   const getAllPosts = async () => {
     const data = await getDocs(postColectionRef)

@@ -8,7 +8,9 @@ const Layout = ({ children, setIsCreatePost, isCreatePost }) => {
   return (
     <div>
       <Header setIsCreatePost={setIsCreatePost} />
-      <main className="main-layout">{children}</main>
+      <div className="d-flex justify-content-center ml-4">
+        <main className="main-layout">{children}</main>
+      </div>
     </div>
   )
 }

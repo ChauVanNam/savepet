@@ -3,9 +3,8 @@ import React, { useState } from "react"
 import Layout from "../../components/Layout"
 import ProfilePage from "../../components/Profile"
 import CreatePost from "../../components/CreatePost"
-import { Tab, Tabs, TabList, TabPanel } from "react-tabs"
-
-const Profile = () => {
+import PostShowPage from "../../components/Posts/Show"
+const PostShow = () => {
   const [isCreatePost, setIsCreatePost] = useState(false)
   const router = useRouter()
   return (
@@ -17,8 +16,9 @@ const Profile = () => {
           router.push("/")
         }}
       />
-      <ProfilePage />
+      <PostShowPage />
+      {/* <ProfilePage /> */}
     </Layout>
   )
 }
-export default Profile
+export default PostShow

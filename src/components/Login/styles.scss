@@ -18,3 +18,17 @@
         width: 400px;
     }
 }
+.login-with-social-text {
+    width: 100%;
+    text-align: center;
+    border-bottom: 1px solid #b6b6b6;
+    line-height: 0;
+    margin: 10px 0 20px;
+    span {
+        background: #fff;
+        font-size: 14px;
+        font-weight: 500;
+        color: #616161;
+        padding: 0 18px;
+    }
+}

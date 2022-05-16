@@ -7,3 +7,63 @@
   width: 120px;
   height: 120px;
 }
+@mixin modScroll {
+  /* width */
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  /* Track */
+  &::-webkit-scrollbar-track {
+    background: #fafafa;
+  }
+
+  /* Handle */
+  &::-webkit-scrollbar-thumb {
+    background-color: rgba(89, 89, 89, 0.3);
+    border-radius: 2px;
+  }
+
+  /* Handle on hover */
+  &::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
+
+  &--prevent {
+    overscroll-behavior: contain;
+  }
+}
+
+.mod-scroll {
+  @include modScroll;
+}
+.ckeditor {
+  min-height: 200px;
+}
+.ck.ck-editor__main > .ck-editor__editable:not(.ck-focused) {
+  border-color: #dee2e6 !important;
+}
+.ck.ck-editor__top .ck-sticky-panel .ck-toolbar {
+  border-bottom-width: 0;
+  display: none;
+}
+.ck.ck-editor__editable_inline {
+  border-color: #dee2e6;
+}
+ck.ck-editor__editable_inline > :last-child {
+  margin-bottom: 10px !important;
+}
+.ck.ck-editor__editable_inline > :first-child {
+  margin-top: 10px !important;
+}
+.ck .ck-content {
+  height: 200px;
+  border-radius: 4px !important;
+}
+.ck.ck-content {
+  @include modScroll;
+  & p {
+    margin-bottom: 0;
+    font-size: 14px;
+  }
+}
